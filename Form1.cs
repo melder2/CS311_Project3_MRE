@@ -141,16 +141,18 @@ namespace CS311_Project3_MRE
 
             meats = new CheckBox[] {ckbPepporoni, ckbSausage, ckbCanadianBacon, ckbSpicyItalianSausage};
             foreach (var ckb in meats)
+            {
                 if (ckb.Checked)
-                rtfOrderSummary.Text = ckb.Text + "\n";
-                price += 2;
-                
+                    rtfOrderSummary.Text = ckb.Text + "\n";
+                    price += 2;
+            }   
             veggies = new CheckBox[] {ckbOnion, ckbGreenPepper, ckbBlackOlives, ckbGreenOlives, ckbBananaPeppers, ckbJalepeno, ckbExtraCheese, ckbMushroom};
-            foreach(var ckb in veggies)    
+            foreach (var ckb in veggies)
+            {
                 if (ckb.Checked)
-                rtfOrderSummary.Text = ckb.Text + "\n";
-                price += 1;
-            
+                    rtfOrderSummary.Text = ckb.Text + "\n";
+                    price += 1;
+            }
            
             txtSubTotal.Text = price.ToString("C");
             txtTax.Text = (price * .06).ToString("C");
