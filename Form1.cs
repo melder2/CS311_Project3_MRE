@@ -1,11 +1,16 @@
+using System.Security.Cryptography;
+
 namespace CS311_Project3_MRE
 {
     public partial class Form1 : Form
     {
+        private CheckBox[] meats;
+        private CheckBox[] veggies;
+
         public Form1()
         {
             InitializeComponent();
-            double price = 0;
+           
         }//end constructor
 
         private void btnCalculate_Click(object sender, EventArgs e)
@@ -15,7 +20,7 @@ namespace CS311_Project3_MRE
 
         private void rtfOrderSummary_TextChanged(object sender, EventArgs e)
         {
-            //rtfOrderSummary.Text = "You ordered a " + cboSize.GetItemText(cboSize.SelectedItem) + "pizza with " + gbCrustType + " and the following toppings: ";
+            
         }//end rtfOrderSummary_TextChanged method
 
         private void ckbPepporoni_CheckedChanged(object sender, EventArgs e)
@@ -132,41 +137,51 @@ namespace CS311_Project3_MRE
 
         private void Summary()
         {
+            rtfOrderSummary.Text = "";
+            int size = cboSize.SelectedIndex;
+            rtfOrderSummary.Text = "You ordered a " + cboSize.GetItemText(cboSize.SelectedItem) + "pizza with " + rtfOrderSummary.SelectedText + " and the following toppings: ";
             double price = 0;
-            if (cboSize.GetItemText(cboSize.SelectedItem) == "Small")
+            switch (size)
+            {
+                case 0:
+                    price += 2;
+                    break;
+
+                case 1:
+                    price += 5;
+                    break;
+
+                case 2:
+                    price += 10;
+                    break;
+
+                case 3:
+                    price += 15;
+                    break;
+
+                case 4:
+                    price += 20;
+                    break;
+            }
+            
+            if (rdoThin.Checked)
+                rtfOrderSummary.SelectedText = "Thin crust";
+            if (rdoThick.Checked)
+                rtfOrderSummary.SelectedText = "Thick crust";
+            else rtfOrderSummary.SelectedText = "Regular crust";
+
+            meats = new CheckBox[] {ckbPepporoni, ckbSausage, ckbCanadianBacon, ckbSpicyItalianSausage};
+            foreach (var ckb in meats)
+                if (ckb.Checked)
+                rtfOrderSummary.Text = meats[ckb.Checked];
                 price += 2;
-            if (cboSize.GetItemText(cboSize.SelectedItem) == "Medium")
-                price += 5;
-            if (cboSize.GetItemText(cboSize.SelectedItem) == "Large")
-                price += 10;
-            if (cboSize.GetItemText(cboSize.SelectedItem) == "X-Large")
-                price += 15;
-            if (cboSize.GetItemText(cboSize.SelectedItem) == "Ginormous")
-                price += 20;
-            if (ckbPepporoni.Checked)
-                price += 2;
-            if (ckbSausage.Checked)
-                price += 2;
-            if (ckbCanadianBacon.Checked)
-                price += 2;
-            if (ckbSpicyItalianSausage.Checked)
-                price += 2;
-            if (ckbOnion.Checked)
+
+            veggies = new CheckBox[] {ckbOnion, ckbGreenPepper, ckbBlackOlives, ckbGreenOlives, ckbBananaPeppers, ckbJalepeno, ckbExtraCheese, ckbMushroom};
+            foreach(var ckb in veggies)    
+                if (ckb.Checked)
+                rtfOrderSummary.Text = ckb.Checked;
                 price += 1;
-            if (ckbGreenPepper.Checked)
-                price += 1;
-            if (ckbBlackOlives.Checked)
-                price += 1;
-            if (ckbGreenOlives.Checked)
-                price += 1;
-            if (ckbBananaPeppers.Checked)
-                price += 1;
-            if (ckbJalepeno.Checked)
-                price += 1;
-            if (ckbExtraCheese.Checked)
-                price += 1;
-            if (ckbMushroom.Checked)
-                price += 1;
+            
            
             txtSubTotal.Text = price.ToString("C");
             txtTax.Text = (price * .06).ToString("C");
