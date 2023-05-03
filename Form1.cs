@@ -27,6 +27,80 @@ namespace CS311_Project3_MRE
             Summary();
         }//end btnCalculate_Click method
         
+                
+        /**
+         * Summary method totals up the order based on the selections and siplays it into the 
+         * SubTotal textbox, calculates the tax and displays it into the tax textbox, and totals
+         * the order and siplays it in the total textbox. It also writes a summary of the pizza 
+         * order to the rich text box Order Summary
+         */
+        private void Summary()
+        {
+            String crust = "";//creates string called crust
+            if (rdoThin.Checked)
+            { crust = "Thin crust"; }//if thin checkbox is checked crust will equal this string
+            if (rdoThick.Checked)
+            { crust = "Thick crust"; }//if thick checkbox is checked crust will equal this string
+            else { crust = "Regular crust"; }//else prints the string
+            
+            double price = 0;//initiating price variable to 0
+            rtfOrderSummary.Clear();//clearing the rich text box
+            int size = cboSize.SelectedIndex;//assigning the selected index of cboSize to size
+            rtfOrderSummary.SelectedText += "You ordered a " + cboSize.GetItemText(cboSize.SelectedItem) + " pizza with " + crust + " and the following toppings: " + "\n";
+            //creating the first sentence of the rich text box combined with a string, the size of pizza, string, crust variable, and the last string
+
+            switch (size)
+            {
+                case 0:
+                    price += 2;//if array index is 0 increment price by 2
+                    break;
+
+                case 1:
+                    price += 5;//if array index is 1 increment price by 5
+                    break;
+
+                case 2:
+                    price += 10;//if array index is 0 increment price by 10
+                    break;
+
+                case 3:
+                    price += 15;//if array index is 0 increment price by 15
+                    break;
+
+                case 4:
+                    price += 20;//if array index is 0 increment price by 20
+                    break;
+            }//end switch 
+
+            meats = new CheckBox[] {ckbPepporoni, ckbSausage, ckbCanadianBacon, ckbSpicyItalianSausage};//creating an array of meats
+            foreach (var ckb in meats)//for each ckb in the array meats
+            {
+                if (ckb.Checked)
+                {
+                    rtfOrderSummary.SelectionBullet = true;//open the bullet point function
+                    rtfOrderSummary.SelectedText = ckb.Text + "\n";//prints any checkboxes that have been checked for veggies in the rtf
+                    price += 2;//increments price by 2 each time a ckb is selected
+                    rtfOrderSummary.SelectionBullet = false;//close the bullet point function
+                }//end if statement
+            }//end foreach statement   
+            veggies = new CheckBox[] {ckbOnion, ckbGreenPepper, ckbBlackOlives, ckbGreenOlives, ckbBananaPeppers, ckbJalepeno, ckbExtraCheese, ckbMushroom};//creating an array of veggies
+            foreach (var ckb in veggies)//for each ckb in the array vegies
+            {
+                if (ckb.Checked)
+                {
+                    rtfOrderSummary.SelectionBullet = true;//open the bullet function
+                    rtfOrderSummary.SelectedText = ckb.Text + "\n";//prints any checkboxes that have been checked for veggies in the rtf
+                    price += 1;//increments price by 1 each time a ckb is selected
+                    rtfOrderSummary.SelectionBullet = false;//close the bullet point function
+                }//end if statement               
+            }//end foreach statement
+           
+            txtSubTotal.Text = price.ToString("C");//totals the price of the size and toppings, converts to string, and puts it in the txtSubTotal
+            txtTax.Text = (price * .06).ToString("C");//multiplies the price by .06 to get tax, converts to string, and puts it in the txtTax
+            double sum = price + (price *.06);//sums up the subtotal + tax in the sum variable
+            txtTotal.Text = sum.ToString("C");//prints the sum in a string in the txtTotal
+        }//end summary method
+        
         private void rtfOrderSummary_TextChanged(object sender, EventArgs e)
         {
             
@@ -111,79 +185,7 @@ namespace CS311_Project3_MRE
         {
           
         }//end cboSize_SelectedIndexChanged method
-        
-        /**
-         * Summary method totals up the order based on the selections and siplays it into the 
-         * SubTotal textbox, calculates the tax and displays it into the tax textbox, and totals
-         * the order and siplays it in the total textbox. It also writes a summary of the pizza 
-         * order to the rich text box Order Summary
-         */
-        private void Summary()
-        {
-            String crust = "";//creates string called crust
-            if (rdoThin.Checked)
-            { crust = "Thin crust"; }//if thin checkbox is checked crust will equal this string
-            if (rdoThick.Checked)
-            { crust = "Thick crust"; }//if thick checkbox is checked crust will equal this string
-            else { crust = "Regular crust"; }//else prints the string
-            
-            double price = 0;//initiating price variable to 0
-            rtfOrderSummary.Clear();//clearing the rich text box
-            int size = cboSize.SelectedIndex;//assigning the selected index of cboSize to size
-            rtfOrderSummary.SelectedText += "You ordered a " + cboSize.GetItemText(cboSize.SelectedItem) + " pizza with " + crust + " and the following toppings: " + "\n";
-            //creating the first sentence of the rich text box combined with a string, the size of pizza, string, crust variable, and the last string
 
-            switch (size)
-            {
-                case 0:
-                    price += 2;//if array index is 0 increment price by 2
-                    break;
-
-                case 1:
-                    price += 5;//if array index is 1 increment price by 5
-                    break;
-
-                case 2:
-                    price += 10;//if array index is 0 increment price by 10
-                    break;
-
-                case 3:
-                    price += 15;//if array index is 0 increment price by 15
-                    break;
-
-                case 4:
-                    price += 20;//if array index is 0 increment price by 20
-                    break;
-            }//end switch 
-
-            meats = new CheckBox[] {ckbPepporoni, ckbSausage, ckbCanadianBacon, ckbSpicyItalianSausage};//creating an array of meats
-            foreach (var ckb in meats)//for each ckb in the array meats
-            {
-                if (ckb.Checked)
-                {
-                    rtfOrderSummary.SelectionBullet = true;//open the bullet point function
-                    rtfOrderSummary.SelectedText = ckb.Text + "\n";//prints any checkboxes that have been checked for veggies in the rtf
-                    price += 2;//increments price by 2 each time a ckb is selected
-                    rtfOrderSummary.SelectionBullet = false;//close the bullet point function
-                }//end if statement
-            }//end foreach statement   
-            veggies = new CheckBox[] {ckbOnion, ckbGreenPepper, ckbBlackOlives, ckbGreenOlives, ckbBananaPeppers, ckbJalepeno, ckbExtraCheese, ckbMushroom};//creating an array of veggies
-            foreach (var ckb in veggies)//for each ckb in the array vegies
-            {
-                if (ckb.Checked)
-                {
-                    rtfOrderSummary.SelectionBullet = true;//open the bullet function
-                    rtfOrderSummary.SelectedText = ckb.Text + "\n";//prints any checkboxes that have been checked for veggies in the rtf
-                    price += 1;//increments price by 1 each time a ckb is selected
-                    rtfOrderSummary.SelectionBullet = false;//close the bullet point function
-                }//end if statement               
-            }//end foreach statement
-           
-            txtSubTotal.Text = price.ToString("C");//totals the price of the size and toppings, converts to string, and puts it in the txtSubTotal
-            txtTax.Text = (price * .06).ToString("C");//multiplies the price by .06 to get tax, converts to string, and puts it in the txtTax
-            double sum = price + (price *.06);//sums up the subtotal + tax in the sum variable
-            txtTotal.Text = sum.ToString("C");//prints the sum in a string in the txtTotal
-        }//end summary method
     
     }//end class
 }//end namespace
